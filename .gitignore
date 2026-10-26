@@ -1,0 +1,34 @@
+# 依赖
+node_modules/
+
+# 构建产物
+dist/
+dist-cli/
+dist-firefox/
+release/
+store/
+
+# 本地比对产物
+.tracing-report/
+
+# E2E 运行产物（脚本本身可提交）
+.e2e/.cache/
+.e2e/shots/
+.e2e/diff-report/
+.e2e/extension-report/
+.e2e/semantic-report/
+.e2e/site/
+.e2e/fixtures/
+
+# 第三方参考扩展，不要提交
+.ref-crx/
+
+# 编辑器与系统文件
+.DS_Store
+.idea/
+.vscode/
+*.local
+
+# 日志
+*.log
+npm-debug.log*

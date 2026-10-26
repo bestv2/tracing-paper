@@ -1,0 +1,33 @@
+{
+  "name": "tracing-paper",
+  "private": true,
+  "version": "3.0.0",
+  "description": "描图纸 Tracing Paper —— 把设计稿覆盖到网页上做视觉走查与像素比对，并输出可交给 AI / CI 的报告",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/build-ext.mjs chrome --watch",
+    "build": "tsc --noEmit && node scripts/build-ext.mjs && npm run build:cli",
+    "build:chrome": "tsc --noEmit && node scripts/build-ext.mjs chrome",
+    "build:firefox": "tsc --noEmit && node scripts/build-ext.mjs firefox",
+    "build:cli": "vite build --config vite.config.cli.ts",
+    "release": "npm run build && node scripts/package.mjs",
+    "store:assets": "node scripts/store-assets.mjs",
+    "diff": "node dist-cli/tracing-diff.mjs",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist dist-firefox release"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zustand": "^4.5.5"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.270",
+    "@types/node": "^20.14.15",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.2"
+  }
+}
