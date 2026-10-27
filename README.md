@@ -25,6 +25,7 @@ live page ─────┘
 
 - [Tracing Paper · 描图纸](#tracing-paper--描图纸)
   - [Table of contents](#table-of-contents)
+  - [Screenshots](#screenshots)
   - [Features](#features)
     - [Overlay and inspect](#overlay-and-inspect)
     - [Auto-fit](#auto-fit)
@@ -48,6 +49,22 @@ live page ─────┘
   - [Limitations](#limitations)
   - [Contributing](#contributing)
   - [License](#license)
+
+## Screenshots
+
+| Overlay · 55% opacity | Layer stack |
+| --- | --- |
+| ![A design mockup blended over the live page](docs/screenshots/overlay.png)<br><sub>Any mockup on any page: drag, scale, snap, blend — auto-fitted here.</sub> | ![Layer list with opacity, blend mode, visibility and lock controls](docs/screenshots/layers.png)<br><sub>Per-layer opacity, blend mode, lock, visibility and order.</sub> |
+
+![Pixel diff: changed regions marked on the page next to the report panel](docs/screenshots/diff.png)
+
+<sub>Diff: changed regions drawn on the page, findings with ΔE / SSIM, the matched DOM selector and a suggested fix.</sub>
+
+<p align="center">
+  <img src="docs/screenshots/popup.png" width="280" alt="Popup with the active scene, asset library and per-URL restore">
+</p>
+
+<p align="center"><sub>Popup: current scene, asset library and per-URL restore. Screenshots come from the demo page in `.e2e/site`; the UI follows the browser language.</sub></p>
 
 ## Features
 
@@ -83,9 +100,13 @@ Before reporting anything, the extension checks whether the layer is actually si
 - `drift` — the page content is more than 2 px or 1% scale away; the report carries the suggested rect and one click realigns and reruns;
 - `weak` — no confident match, treat the diff as inconclusive.
 
+![Baseline self-check reporting drift, with a suggested rect and a one-click realign](docs/screenshots/baseline-drift.png)
+
 ### Reports
 
-Export from the diff panel as **JSON**, **Markdown**, **SARIF** or **PNG**, or copy the JSON to the clipboard. Every artifact is self-describing, stable and diffable.
+Export from the diff panel as **JSON**, **Markdown**, **SARIF** or **PNG**, or copy the JSON to the clipboard. Tick any finding to copy it on its own, copy the whole selection, or export just the picked subset — numbering stays aligned with the full report. Every artifact is self-describing, stable and diffable.
+
+![A finding expanded into design / page / diff crops, with the export actions below](docs/screenshots/report-finding.png)
 
 ### CLI
 
