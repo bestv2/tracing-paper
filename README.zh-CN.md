@@ -287,7 +287,7 @@ jobs:
 {
   "schemaVersion": "tracing.diff/2",
   "generatedAt": "2026-10-26T09:12:44.512Z",
-  "tool": { "name": "tracing-paper", "version": "3.0.0", "mode": "cli" },
+  "tool": { "name": "tracing-paper", "version": "1.0.0", "mode": "cli" },
   "inputs": {
     "expected": { "name": "home@2x.png", "width": 750, "height": 1624 },
     "actual": { "name": "home.png", "width": 1440, "height": 900, "url": "https://example.com/" },

@@ -1,6 +1,6 @@
 # Microsoft Edge Add-ons 提交信息
 
-> 上传包：`release/tracing-paper-3.0.0-edge.zip`（与 Chrome 同一份 Chromium 产物，无需单独构建）
+> 上传包：`release/tracing-paper-1.0.0-edge.zip`（与 Chrome 同一份 Chromium 产物，无需单独构建）
 > 隐私政策 URL 与 Chrome 共用：`https://bestv2.github.io/tracing-paper/`（仓库 `docs/` 发布到 GitHub Pages）。
 
 ## 基本信息

@@ -7,9 +7,9 @@
 
 | 文件 | 用途 | 对应商店 |
 | --- | --- | --- |
-| `release/tracing-paper-3.0.0-chrome.zip` | 扩展安装包 | Chrome Web Store |
-| `release/tracing-paper-3.0.0-edge.zip` | 扩展安装包（与 Chrome 同一份 Chromium 产物） | Edge Add-ons |
-| `release/tracing-paper-3.0.0-firefox.zip` | 扩展安装包（MV3 事件页） | Firefox AMO |
+| `release/tracing-paper-1.0.0-chrome.zip` | 扩展安装包 | Chrome Web Store |
+| `release/tracing-paper-1.0.0-edge.zip` | 扩展安装包（与 Chrome 同一份 Chromium 产物） | Edge Add-ons |
+| `release/tracing-paper-1.0.0-firefox.zip` | 扩展安装包（MV3 事件页） | Firefox AMO |
 | `store/assets/icons/128.png` | 商店图标 128×128 | Chrome / Firefox |
 | `store/assets/icons/300.png` | 商店 Logo 300×300 | Edge |
 | `store/assets/icons/512.png` | 备用大图标 | 全部 |
@@ -52,7 +52,7 @@ npm run store:docs     # 把隐私政策同步到 docs/index.html（GitHub Pages
 ### Chrome Web Store
 
 1. 打开 <https://chrome.google.com/webstore/devconsole>，支付一次性注册费（如尚未注册）。
-2. 「新增项目」→ 上传 `release/tracing-paper-3.0.0-chrome.zip`。
+2. 「新增项目」→ 上传 `release/tracing-paper-1.0.0-chrome.zip`。
 3. 按 `chrome/listing.md` 填写商店信息、图片、隐私权政策网址。
 4. 「隐私权规范」页：单一用途说明、权限理由（用 `permissions.md`）、远程代码选「否」、数据使用选「不收集」并勾选三项承诺。
 5. 「分发」页：可见性、销售区域（免费）、提交审核。首次审核通常 1–3 个工作日。
@@ -60,7 +60,7 @@ npm run store:docs     # 把隐私政策同步到 docs/index.html（GitHub Pages
 ### Microsoft Edge Add-ons
 
 1. 打开 <https://partner.microsoft.com/dashboard/microsoftedge>，用开发者账号登录。
-2. 「创建新扩展」→ 上传 `release/tracing-paper-3.0.0-edge.zip`（同一个包，Edge 直接接受）。
+2. 「创建新扩展」→ 上传 `release/tracing-paper-1.0.0-edge.zip`（同一个包，Edge 直接接受）。
 3. 按 `edge/listing.md` 填写，Logo 用 300×300，截图 1280×800。
 4. 提交审核，通常 1–2 个工作日。
 
@@ -69,7 +69,7 @@ Edge 与 Chrome 共用一份代码，**审核要点**：manifest 里 `minimum_ch
 ### Firefox AMO
 
 1. 打开 <https://addons.mozilla.org/developers/addon/submit/>，选择「On this site」。
-2. 上传 `release/tracing-paper-3.0.0-firefox.zip`。
+2. 上传 `release/tracing-paper-1.0.0-firefox.zip`。
 3. 按 `firefox/listing.md` 填写摘要、描述、隐私政策、审核员备注。
 4. 选择「不收集数据」以匹配 manifest 里的 `data_collection_permissions: { required: ["none"] }`。
 5. 提交后可选「自行分发（不签名）」或让 AMO 签名；签名版可直接装进正式版 Firefox。

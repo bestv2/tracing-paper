@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "描图纸 Tracing Paper",
   "short_name": "描图纸",
-  "version": "3.0.0",
+  "version": "1.0.0",
   "description": "把设计稿像描图纸一样覆盖在网页上：多图层拖动缩放、透明度与混合模式比对、像素级差异定位，并把结果整理成可交给 AI / CI 的报告。",
   "minimum_chrome_version": "110",
   "icons": {

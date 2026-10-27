@@ -1,6 +1,6 @@
 # 描图纸 Tracing Paper 隐私政策
 
-最后更新：2026-10-26 · 适用版本：3.0.0 及以后
+最后更新：2026-10-27 · 适用版本：1.0.0 及以后
 
 描图纸 Tracing Paper（下称「本扩展」）是一个浏览器内的视觉走查工具：把设计稿叠加到网页上，
 在本地做像素比对并生成差异报告。**本扩展不收集、不上传、不共享任何用户数据。**
@@ -62,7 +62,7 @@ Firefox 的 Manifest V3 将「访问网站」作为可选授权，你可以随�
 
 # Tracing Paper Privacy Policy
 
-Last updated: 2026-10-26 · Applies to version 3.0.0 and later
+Last updated: 2026-10-27 · Applies to version 1.0.0 and later
 
 Tracing Paper is an in-browser visual QA tool: it overlays a design mockup on a web page, runs a
 pixel-level comparison locally and produces a diff report. **The extension does not collect, upload or

@@ -595,7 +595,7 @@ export function compareRasters(input: CompareInput): DiffResult {
   const report: DiffResult['report'] = {
     schemaVersion: 'tracing.diff/2',
     generatedAt: new Date().toISOString(),
-    tool: { name: 'tracing-paper', version: '3.0.0', mode: 'cli' },
+    tool: { name: 'tracing-paper', version: '1.0.0', mode: 'cli' },
     inputs: {
       expected: { width: expected.width, height: expected.height },
       actual: { width: actual.width, height: actual.height },

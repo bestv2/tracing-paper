@@ -1,6 +1,6 @@
 # Firefox AMO 提交信息
 
-> 上传包：`release/tracing-paper-3.0.0-firefox.zip`
+> 上传包：`release/tracing-paper-1.0.0-firefox.zip`
 > 该包与 Chromium 版同源，manifest 已按 Firefox MV3 适配：`background.scripts` 事件页 +
 > `browser_specific_settings.gecko`（含 `id`、`strict_min_version: 115.0`、`data_collection_permissions`）。
 
@@ -102,4 +102,4 @@ visual diff report. It is a design-QA tool; it never modifies the page, network 
 
 ## 版本备注（Release notes，≤ 可留空）
 
-首个公开版本 v3.0.0：多图层走查、自动对齐、像素比对与 JSON / Markdown / SARIF 报告导出。
+首个公开版本 v1.0.0：多图层走查、自动对齐、像素比对与 JSON / Markdown / SARIF 报告导出。

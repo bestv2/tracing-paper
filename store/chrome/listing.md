@@ -1,6 +1,6 @@
 # Chrome Web Store 提交信息
 
-> 上传包：`release/tracing-paper-3.0.0-chrome.zip`
+> 上传包：`release/tracing-paper-1.0.0-chrome.zip`
 > 字段上限按 2026 年后台：名称 75 字符、简短说明 132 字符、详细说明 16000 字符。
 > 隐私政策由仓库 `docs/index.html` 发布到 GitHub Pages（Settings → Pages → main /docs），
 > 地址 `https://bestv2.github.io/tracing-paper/`；改了隐私政策记得同步 `store/privacy-policy.html` 后重新复制。
