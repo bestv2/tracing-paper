@@ -181,6 +181,9 @@
 
 .tp-layer[data-draggable='true'] {
   cursor: grab;
+  /* 触摸屏必须接管手势：否则上下拖动会被页面滚动抢走并触发 pointercancel，表现为拖不动 */
+  touch-action: none;
+  -webkit-touch-callout: none;
 }
 
 .tp-layer[data-dragging='true'] {
@@ -239,6 +242,15 @@
 .tp-handle[data-handle='s']  { left: 50%; top: 100%; transform: translate(-50%, -50%); cursor: ns-resize; }
 .tp-handle[data-handle='sw'] { left: 0; top: 100%; transform: translate(-50%, -50%); cursor: nesw-resize; }
 .tp-handle[data-handle='w']  { left: 0; top: 50%; transform: translate(-50%, -50%); cursor: ew-resize; }
+
+/* 手指比鼠标粗：把手放大一些，否则很难精准抓住 */
+@media (pointer: coarse) {
+  .tp-handle {
+    width: 14px;
+    height: 14px;
+    border-width: 2px;
+  }
+}
 
 .tp-badge {
   position: absolute;
@@ -370,6 +382,33 @@
   padding: 0 5px 0 7px;
 }
 
+/* 窄屏：滑块收进浮层，这里只留一枚显示百分比的按钮 */
+.tp-btn--opacity {
+  gap: 4px;
+  padding: 0 7px;
+  font: 500 11px/1 var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.tp-opacity-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 2px 4px;
+}
+
+.tp-opacity-presets {
+  display: flex;
+  gap: 4px;
+}
+
+.tp-opacity-presets .tp-chip {
+  flex: 1;
+  height: 26px;
+  padding: 0;
+  letter-spacing: 0;
+}
+
 .tp-btn {
   display: inline-flex;
   align-items: center;
@@ -455,6 +494,13 @@
   cursor: ew-resize;
 }
 
+/* 浮层里的滑块：加高轨道与拖柄，保证手指能拖。
+   用复合选择器提高优先级，避免被后面窄屏断点里的 .tp-slider 宽度盖掉 */
+.tp-slider.tp-slider--touch {
+  width: 100%;
+  height: 26px;
+}
+
 .tp-slider::-webkit-slider-runnable-track {
   height: 3px;
   border-radius: 3px;
@@ -481,6 +527,18 @@
 .tp-slider:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+/* 写在基础轨道/拖柄之后，否则会被同优先级的基础样式盖掉 */
+.tp-slider--touch::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 4px;
+}
+
+.tp-slider--touch::-webkit-slider-thumb {
+  width: 18px;
+  height: 18px;
+  margin-top: -7px;
 }
 
 .tp-chip {
@@ -1497,13 +1555,87 @@
 .tp-report__row {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 5px;
   width: 100%;
-  padding: 7px 6px;
+  padding: 5px 4px 5px 2px;
   border-radius: var(--r);
   text-align: left;
   color: var(--fg);
+}
+
+.tp-report__main {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex: 1;
+  min-width: 0;
+  padding: 2px 0;
+  text-align: left;
+  color: var(--fg);
   font: 400 11px/1.25 var(--sans);
+}
+
+/* 勾选框：按钮重置会清掉边框，这里补回来 */
+.tp-root .tp-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  flex: none;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line-strong);
+  background: var(--panel-solid);
+  color: var(--on-accent);
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.tp-root .tp-check:hover {
+  border-color: var(--accent);
+}
+
+.tp-root .tp-check[data-on='true'] {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.tp-report__copy {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  opacity: 0.5;
+  transition: opacity 120ms ease, background 120ms ease, color 120ms ease;
+}
+
+.tp-report__row:hover .tp-report__copy,
+.tp-report__copy:focus-visible {
+  opacity: 1;
+}
+
+.tp-report__pick {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0 12px 6px;
+}
+
+.tp-root .tp-report__pick .tp-chip {
+  height: 22px;
+  border: 1px solid var(--line);
+  background: var(--panel-solid);
+}
+
+.tp-root .tp-report__pick .tp-chip:hover:not(:disabled) {
+  border-color: var(--accent-line);
+  color: var(--accent);
+}
+
+.tp-report__pickcount {
+  margin-right: auto;
+  font: 400 9.5px/1 var(--mono);
+  color: var(--dim);
+  font-variant-numeric: tabular-nums;
 }
 
 .tp-report__row:hover {
@@ -1512,6 +1644,10 @@
 
 .tp-report__row[data-active='true'] {
   background: var(--accent-soft);
+}
+
+.tp-report__row[data-picked='true'] .tp-report__no {
+  color: var(--accent);
 }
 
 .tp-report__dot {
@@ -2136,11 +2272,25 @@
   }
 }
 
-@media (max-width: 620px) {
-  .tp-opacity {
-    display: none;
+/* 触摸屏上勾选、复制要够手指点 */
+@media (pointer: coarse) {
+  .tp-root .tp-check {
+    width: 18px;
+    height: 18px;
   }
 
+  .tp-report__copy {
+    width: 26px;
+    height: 26px;
+    opacity: 1;
+  }
+
+  .tp-root .tp-report__pick .tp-chip {
+    height: 26px;
+  }
+}
+
+@media (max-width: 620px) {
   .tp-empty {
     width: min(320px, calc(100vw - 32px));
   }

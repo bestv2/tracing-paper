@@ -223,6 +223,70 @@ function findingMessage(finding: Finding): string {
   return `${KIND_LABEL[finding.kind]}差异${where} ΔE=${finding.metrics.deltaE} SSIM=${finding.metrics.ssim}${extra}`
 }
 
+/** 一处分异的可读文本块：单块复制与勾选导出共用 */
+function findingBlock(finding: Finding, index: number): string[] {
+  const lines = [
+    `### ${String(index + 1).padStart(2, '0')} · ${KIND_LABEL[finding.kind]}差异 · ${SEVERITY_LABEL[finding.severity]}`,
+  ]
+  if (finding.element) lines.push(`- 元素：\`${finding.element.selector}\``)
+  lines.push(`- 区域：${finding.box.x},${finding.box.y} · ${finding.box.w}×${finding.box.h}`)
+  lines.push(`- 颜色：${finding.expected.hex} → ${finding.actual.hex}`)
+  lines.push(
+    `- 度量：ΔE ${finding.metrics.deltaE} · SSIM ${finding.metrics.ssim} · 超阈 ${Math.round(finding.metrics.pixelRatio * 100)}%`,
+  )
+  if (finding.metrics.shift) {
+    lines.push(`- 位移：${finding.metrics.shift.dx},${finding.metrics.shift.dy} px`)
+  }
+  if (finding.suggestion) {
+    lines.push(`- 建议：\`${finding.suggestion.property}: ${finding.suggestion.to}\``)
+  }
+  if (finding.note) lines.push(`- 说明：${finding.note}`)
+  return lines
+}
+
+/**
+ * 选定差异块的 Markdown：编号沿用整份报告里的序号，贴进工单也能和界面一一对上。
+ * header 用于批量导出，单块复制不需要。
+ */
+export function findingsMarkdown(
+  report: DiffReport,
+  findings: Finding[],
+  withHeader = false,
+): string {
+  const lines: string[] = []
+  if (withHeader) {
+    lines.push(`## 描图纸 · 差异片段（${findings.length}/${report.findings.length}）`)
+    lines.push('')
+    lines.push(
+      `- 设计稿：\`${report.inputs.expected.name ?? 'design.png'}\` ${report.inputs.expected.width}×${report.inputs.expected.height}`,
+    )
+    lines.push(
+      `- 页面：\`${report.inputs.actual.url ?? report.inputs.actual.name ?? 'page'}\` ${report.inputs.actual.width}×${report.inputs.actual.height}`,
+    )
+    lines.push('')
+  }
+  findings.forEach((finding) => {
+    const index = report.findings.findIndex((item) => item.id === finding.id)
+    lines.push(...findingBlock(finding, index < 0 ? 0 : index), '')
+  })
+  return `${lines.join('\n').trimEnd()}\n`
+}
+
+/** 勾选后的报告子集：summary 按选中块重算，其余字段保持原样 */
+export function subsetReport(report: DiffReport, findings: Finding[]): DiffReport {
+  const byKind: Partial<Record<FindingKind, number>> = {}
+  const bySeverity: Partial<Record<Severity, number>> = {}
+  findings.forEach((finding) => {
+    byKind[finding.kind] = (byKind[finding.kind] ?? 0) + 1
+    bySeverity[finding.severity] = (bySeverity[finding.severity] ?? 0) + 1
+  })
+  return {
+    ...report,
+    summary: { ...report.summary, findings: findings.length, byKind, bySeverity },
+    findings,
+  }
+}
+
 export function toMarkdown(report: DiffReport): string {
   const { summary, inputs, policy } = report
   const lines: string[] = []

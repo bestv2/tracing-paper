@@ -18,6 +18,7 @@ export type IconName =
   | 'trash'
   | 'image'
   | 'compare'
+  | 'opacity'
   | 'magnet'
   | 'check'
   | 'copy'
@@ -124,6 +125,13 @@ const paths: Record<IconName, JSX.Element> = {
       <circle cx="12" cy="12" r="8.4" />
       <path d="M12 3.6v16.8" />
       <path d="M12 3.6a8.4 8.4 0 0 1 0 16.8Z" fill="currentColor" stroke="none" />
+    </>
+  ),
+  opacity: (
+    <>
+      <circle cx="12" cy="12" r="8.4" />
+      <path d="M12 3.6a8.4 8.4 0 0 1 8.4 8.4H12Z" fill="currentColor" stroke="none" />
+      <path d="M12 12h8.4A8.4 8.4 0 0 1 12 20.4Z" fill="currentColor" stroke="none" />
     </>
   ),
   magnet: (

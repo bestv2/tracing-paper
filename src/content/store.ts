@@ -11,7 +11,16 @@ export interface Toast {
   tone: 'info' | 'warn'
 }
 
-export type PanelKind = 'blend' | 'fit' | 'size' | 'layers' | 'help' | 'more' | 'diff' | null
+export type PanelKind =
+  | 'opacity'
+  | 'blend'
+  | 'fit'
+  | 'size'
+  | 'layers'
+  | 'help'
+  | 'more'
+  | 'diff'
+  | null
 
 interface SceneStore {
   layers: MockupLayer[]

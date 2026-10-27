@@ -9,7 +9,18 @@ export { estimatePlacement, matchScore } from './placement'
 export type { Placement, PlacementOptions, PlacementRect } from './placement'
 export { analyzeTiles, buildDiffField, changedBounds, measureRegion } from './metrics'
 export type { DiffField, RegionStat, TileStats } from './metrics'
-export { finalizeReport, findingLines, diffReports, toJson, toMarkdown, toSarif, KIND_LABEL, SEVERITY_LABEL } from './report'
+export {
+  finalizeReport,
+  findingsMarkdown,
+  findingLines,
+  diffReports,
+  subsetReport,
+  toJson,
+  toMarkdown,
+  toSarif,
+  KIND_LABEL,
+  SEVERITY_LABEL,
+} from './report'
 export type { ReportContext } from './report'
 export { diffLines, unifiedDiff } from './textdiff'
 export { compareSemantic, parseFigmaDocument, parseLayoutElements } from './semantic'

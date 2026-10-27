@@ -1,5 +1,6 @@
 import { useEffect, useState, type CSSProperties } from 'react'
 import type { Baseline, Finding, FindingKind, Severity } from '@/shared/diff'
+import { findingsMarkdown, subsetReport, toJson } from '@/shared/diff'
 import { useSceneStore } from '../store'
 import { Icon } from '@/shared/Icon'
 import { useT, type StringKey } from '@/shared/i18n'
@@ -308,6 +309,13 @@ export function DiffPanel() {
   const layer = useSceneStore((state) => pickLayer(state.layers, state.selectedId))
   const setLightbox = useSceneStore((state) => state.setLightbox)
   const [viewer, setViewer] = useState<{ items: LightboxImage[]; index: number } | null>(null)
+  // 勾选的差异块：单块复制、批量复制与导出的依据
+  const [picked, setPicked] = useState<Set<string>>(new Set())
+
+  // 重新比对后旧 id 已经不存在，勾选跟着作废
+  useEffect(() => {
+    setPicked(new Set())
+  }, [session?.createdAt])
 
   // 大图打开时暂停全局快捷键，避免方向键把图层播了
   useEffect(() => {
@@ -381,6 +389,53 @@ export function DiffPanel() {
     if (!session) return
     const copied = await copyText(session.json)
     notify(copied ? t('diff.copy.done') : t('diff.copy.blocked'), copied ? 'info' : 'warn')
+  }
+
+  const allFindings = session?.report.findings ?? []
+  const pickedFindings = allFindings.filter((finding) => picked.has(finding.id))
+  const allPicked = allFindings.length > 0 && pickedFindings.length === allFindings.length
+
+  const togglePick = (id: string) => {
+    setPicked((current) => {
+      const next = new Set(current)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
+  const togglePickAll = () => {
+    setPicked(allPicked ? new Set() : new Set(allFindings.map((finding) => finding.id)))
+  }
+
+  const copyFinding = async (finding: Finding) => {
+    if (!session) return
+    const no = session.report.findings.findIndex((item) => item.id === finding.id) + 1
+    const copied = await copyText(findingsMarkdown(session.report, [finding]))
+    notify(
+      copied ? t('diff.copy.block.done', { no }) : t('diff.copy.blocked'),
+      copied ? 'info' : 'warn',
+    )
+  }
+
+  const copyPicked = async () => {
+    if (!session || !pickedFindings.length) return
+    const copied = await copyText(findingsMarkdown(session.report, pickedFindings, true))
+    notify(
+      copied ? t('diff.copy.picked.done', { count: pickedFindings.length }) : t('diff.copy.blocked'),
+      copied ? 'info' : 'warn',
+    )
+  }
+
+  const exportPicked = (format: 'md' | 'json') => {
+    if (!session || !pickedFindings.length) return
+    const base = `${DIFF_FILE_NAME}-${stamp}-selection`
+    if (format === 'md') {
+      downloadText(`${base}.md`, findingsMarkdown(session.report, pickedFindings, true), 'text/markdown')
+    } else {
+      downloadText(`${base}.json`, toJson(subsetReport(session.report, pickedFindings)), 'application/json')
+    }
+    notify(t('diff.export.done', { name: `${format.toUpperCase()} · ${pickedFindings.length}` }))
   }
 
   return (
@@ -502,35 +557,101 @@ export function DiffPanel() {
           ) : null}
 
           {summary.findings ? (
-            <ol className="tp-report__list">
-              {session.report.findings.map((finding, index) => (
-                <li key={finding.id}>
-                  <button
-                    className="tp-report__row"
-                    data-active={finding.id === focusId}
-                    onClick={() => focusOn(finding)}
-                  >
-                    <i className="tp-report__dot" data-sev={finding.severity} />
-                    <span className="tp-report__no">{String(index + 1).padStart(2, '0')}</span>
-                    <span className="tp-report__kind">{t(KIND_KEY[finding.kind])}</span>
-                    <span className="tp-report__where">
-                      {finding.element?.selector ?? `${finding.box.x},${finding.box.y}`}
-                    </span>
-                    <span className="tp-report__de">ΔE {finding.metrics.deltaE.toFixed(1)}</span>
-                  </button>
-                  {finding.id === focusId ? (
-                    <FindingDetail
-                      finding={finding}
-                      crop={session.crops.find((item) => item.id === finding.id)}
-                      onZoom={(index) => {
-                        const crop = session.crops.find((item) => item.id === finding.id)
-                        if (crop) openCrops(crop, index)
-                      }}
-                    />
-                  ) : null}
-                </li>
-              ))}
-            </ol>
+            <>
+              <div className="tp-report__pick">
+                <button
+                  className="tp-chip"
+                  data-active={allPicked}
+                  onClick={togglePickAll}
+                >
+                  {allPicked ? t('diff.pick.none') : t('diff.pick.all')}
+                </button>
+                <span className="tp-report__pickcount">
+                  {t('diff.pick.count', { count: pickedFindings.length, total: allFindings.length })}
+                </span>
+                <button
+                  className="tp-chip"
+                  disabled={!pickedFindings.length}
+                  onClick={() => void copyPicked()}
+                >
+                  <Icon name="copy" size={10} /> {t('diff.pick.copy')}
+                </button>
+                <button
+                  className="tp-chip"
+                  disabled={!pickedFindings.length}
+                  data-tip={t('diff.pick.export.tip')}
+                  onClick={() => exportPicked('md')}
+                >
+                  MD
+                </button>
+                <button
+                  className="tp-chip"
+                  disabled={!pickedFindings.length}
+                  data-tip={t('diff.pick.export.tip')}
+                  onClick={() => exportPicked('json')}
+                >
+                  JSON
+                </button>
+              </div>
+
+              <ol className="tp-report__list">
+                {session.report.findings.map((finding, index) => {
+                  const isPicked = picked.has(finding.id)
+                  return (
+                    <li key={finding.id}>
+                      <div
+                        className="tp-report__row"
+                        data-active={finding.id === focusId}
+                        data-picked={isPicked}
+                      >
+                        <button
+                          className="tp-check"
+                          role="checkbox"
+                          aria-checked={isPicked}
+                          data-on={isPicked}
+                          aria-label={t(isPicked ? 'diff.pick.off' : 'diff.pick.on')}
+                          data-tip={t(isPicked ? 'diff.pick.off' : 'diff.pick.on')}
+                          onClick={() => togglePick(finding.id)}
+                        >
+                          {isPicked ? <Icon name="check" size={9} /> : null}
+                        </button>
+                        <button className="tp-report__main" onClick={() => focusOn(finding)}>
+                          <i className="tp-report__dot" data-sev={finding.severity} />
+                          <span className="tp-report__no">
+                            {String(index + 1).padStart(2, '0')}
+                          </span>
+                          <span className="tp-report__kind">{t(KIND_KEY[finding.kind])}</span>
+                          <span className="tp-report__where">
+                            {finding.element?.selector ?? `${finding.box.x},${finding.box.y}`}
+                          </span>
+                          <span className="tp-report__de">
+                            ΔE {finding.metrics.deltaE.toFixed(1)}
+                          </span>
+                        </button>
+                        <button
+                          className="tp-icon-btn tp-report__copy"
+                          aria-label={t('diff.copy.block')}
+                          data-tip={t('diff.copy.block')}
+                          onClick={() => void copyFinding(finding)}
+                        >
+                          <Icon name="copy" size={11} />
+                        </button>
+                      </div>
+                      {finding.id === focusId ? (
+                        <FindingDetail
+                          finding={finding}
+                          crop={session.crops.find((item) => item.id === finding.id)}
+                          onZoom={(index) => {
+                            const crop = session.crops.find((item) => item.id === finding.id)
+                            if (crop) openCrops(crop, index)
+                          }}
+                        />
+                      ) : null}
+                    </li>
+                  )
+                })}
+              </ol>
+            </>
           ) : (
             <div className="tp-report__clean">
               <Icon name="check" size={14} />

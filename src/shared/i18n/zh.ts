@@ -37,6 +37,8 @@ export const zh = {
   'toolbar.noSelection': '未选中图层 · 点击设计稿后可调整',
 
   /* ------------------------------------------------------------ 面板 */
+  'opacity.title': '不透明度',
+  'opacity.hint': '拖动滑块或直接点选',
   'blend.title': '混合模式',
   'blend.hint': '差值模式适合像素比对',
   'fit.title': '快速匹配',
@@ -167,6 +169,16 @@ export const zh = {
   'diff.copy.done': 'report.json 已复制',
   'diff.copy.blocked': '复制被页面策略拦截',
   'diff.copy.tip': '复制 report.json',
+  'diff.copy.block': '复制此块差异',
+  'diff.copy.block.done': '已复制第 {no} 处差异',
+  'diff.copy.picked.done': '已复制 {count} 处差异',
+  'diff.pick.all': '全选',
+  'diff.pick.none': '取消全选',
+  'diff.pick.count': '已选 {count}/{total}',
+  'diff.pick.copy': '复制所选',
+  'diff.pick.on': '勾选此块',
+  'diff.pick.off': '取消勾选此块',
+  'diff.pick.export.tip': '导出勾选的差异块',
   'diff.clean.hint': '当前视口与设计稿一致（余量 {tiles} 格）',
 
   /* ------------------------------------------------------------ 提示 */

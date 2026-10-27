@@ -1,4 +1,4 @@
-import { useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
+import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import { useSceneStore, type PanelKind } from '../store'
 import { runDiffFlow } from '../lib/diff'
 import { runAutoFitFlow } from '../lib/autofit'
@@ -10,6 +10,7 @@ import {
   FitPanel,
   LayersPanel,
   MorePanel,
+  OpacityPanel,
   ShortcutsPanel,
   SizePanel,
 } from './Panels'
@@ -24,6 +25,24 @@ interface ToolbarProps {
 
 const IS_MAC = /mac/i.test(navigator.platform || navigator.userAgent)
 const MOD = IS_MAC ? '⌘' : 'Ctrl'
+
+/** 与 overlay.css 的窄屏断点保持一致 */
+const COMPACT_QUERY = '(max-width: 620px)'
+
+/** 窄屏（手机视图）时工具栏放不下滑块，透明度改由浮层调节 */
+function useCompact(): boolean {
+  const [compact, setCompact] = useState(() => window.matchMedia(COMPACT_QUERY).matches)
+
+  useEffect(() => {
+    const query = window.matchMedia(COMPACT_QUERY)
+    const onChange = () => setCompact(query.matches)
+    onChange()
+    query.addEventListener('change', onChange)
+    return () => query.removeEventListener('change', onChange)
+  }, [])
+
+  return compact
+}
 
 export function Toolbar({ onCollapse, onClose, onPickImage }: ToolbarProps) {
   const t = useT()
@@ -51,12 +70,19 @@ export function Toolbar({ onCollapse, onClose, onPickImage }: ToolbarProps) {
   const panel = useSceneStore((state) => state.panel)
   const setPanel = useSceneStore((state) => state.setPanel)
   const [offset, setOffset] = useState({ x: 0, y: 0 })
+  const compact = useCompact()
+
+  // 切回宽屏时浮层锚点已被卸载，顺手收起，避免残留状态
+  useEffect(() => {
+    if (!compact && panel === 'opacity') setPanel(null)
+  }, [compact, panel, setPanel])
 
   const blendRef = useRef<HTMLButtonElement>(null)
   const fitRef = useRef<HTMLButtonElement>(null)
   const sizeRef = useRef<HTMLButtonElement>(null)
   const layersRef = useRef<HTMLButtonElement>(null)
   const moreRef = useRef<HTMLButtonElement>(null)
+  const opacityRef = useRef<HTMLButtonElement>(null)
 
   const percent = Math.round((selected?.opacity ?? 1) * 100)
   const blendLabel = t(`blend.${selected?.blend ?? 'normal'}`)
@@ -125,26 +151,41 @@ export function Toolbar({ onCollapse, onClose, onPickImage }: ToolbarProps) {
 
         <span className="tp-sep" />
 
-        <div className="tp-opacity">
-          <input
-            className="tp-slider"
-            type="range"
-            min={0}
-            max={100}
-            step={1}
-            value={percent}
+        {compact ? (
+          <button
+            ref={opacityRef}
+            className="tp-btn tp-btn--opacity"
+            data-active={panel === 'opacity'}
             disabled={!selected}
-            aria-label={t('toolbar.opacity')}
+            onClick={() => togglePanel('opacity')}
             data-tip={t('toolbar.opacity.tip')}
-            style={{ '--tp-fill': `${percent}%` } as React.CSSProperties}
-            onPointerDown={() => pushHistory()}
-            onChange={(event) => {
-              if (!selected) return
-              patchLayer(selected.id, { opacity: Number(event.target.value) / 100 })
-            }}
-          />
-          <span className="tp-btn__value">{percent}%</span>
-        </div>
+            aria-label={t('toolbar.opacity')}
+          >
+            <Icon name="opacity" size={14} />
+            {percent}%
+          </button>
+        ) : (
+          <div className="tp-opacity">
+            <input
+              className="tp-slider"
+              type="range"
+              min={0}
+              max={100}
+              step={1}
+              value={percent}
+              disabled={!selected}
+              aria-label={t('toolbar.opacity')}
+              data-tip={t('toolbar.opacity.tip')}
+              style={{ '--tp-fill': `${percent}%` } as React.CSSProperties}
+              onPointerDown={() => pushHistory()}
+              onChange={(event) => {
+                if (!selected) return
+                patchLayer(selected.id, { opacity: Number(event.target.value) / 100 })
+              }}
+            />
+            <span className="tp-btn__value">{percent}%</span>
+          </div>
+        )}
 
         <div className="tp-group">
           <button
@@ -293,6 +334,12 @@ export function Toolbar({ onCollapse, onClose, onPickImage }: ToolbarProps) {
           </button>
         </div>
       </div>
+
+      {panel === 'opacity' && compact && selected && opacityRef.current ? (
+        <Popover anchorRef={opacityRef} onClose={() => setPanel(null)} width={252}>
+          <OpacityPanel layer={selected} />
+        </Popover>
+      ) : null}
 
       {panel === 'blend' && selected && blendRef.current ? (
         <Popover anchorRef={blendRef} onClose={() => setPanel(null)} width={252}>

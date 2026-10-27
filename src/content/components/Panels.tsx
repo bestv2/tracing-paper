@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { BLEND_MODES, type BlendMode, type MockupLayer } from '@/shared/types'
 import { useSceneStore } from '../store'
 import { applyFit, flashCompare, type FitKind } from '../lib/actions'
@@ -21,6 +21,54 @@ const THEMES = [
   { value: 'light', label: 'toolbar.more.theme.light' },
   { value: 'dark', label: 'toolbar.more.theme.dark' },
 ] as const
+
+const OPACITY_PRESETS = [0, 25, 50, 75, 100] as const
+
+/** 窄屏专用：工具栏放不下滑块，收进浮层并让滑块、预设都够手指点 */
+export function OpacityPanel({ layer }: { layer: MockupLayer }) {
+  const t = useT()
+  const patchLayer = useSceneStore((state) => state.patchLayer)
+  const pushHistory = useSceneStore((state) => state.pushHistory)
+  const percent = Math.round(layer.opacity * 100)
+
+  return (
+    <>
+      <div className="tp-popover__title">
+        <b>{t('opacity.title')}</b>
+        <span className="tp-btn__value">{percent}%</span>
+      </div>
+      <div className="tp-opacity-panel">
+        <input
+          className="tp-slider tp-slider--touch"
+          type="range"
+          min={0}
+          max={100}
+          step={1}
+          value={percent}
+          aria-label={t('opacity.title')}
+          data-tip={t('opacity.hint')}
+          style={{ '--tp-fill': `${percent}%` } as CSSProperties}
+          onPointerDown={() => pushHistory()}
+          onChange={(event) => {
+            patchLayer(layer.id, { opacity: Number(event.target.value) / 100 })
+          }}
+        />
+        <div className="tp-opacity-presets">
+          {OPACITY_PRESETS.map((value) => (
+            <button
+              key={value}
+              className="tp-chip"
+              data-active={value === percent}
+              onClick={() => patchLayer(layer.id, { opacity: value / 100 }, true)}
+            >
+              {value}%
+            </button>
+          ))}
+        </div>
+      </div>
+    </>
+  )
+}
 
 export function BlendPanel({
   current,

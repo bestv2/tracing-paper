@@ -10,7 +10,7 @@ interface PopoverProps {
 /** 悬浮面板：自动贴合工具栏按钮并避免超出视口 */
 export function Popover({ anchorRef, onClose, children, width = 260 }: PopoverProps) {
   const panelRef = useRef<HTMLDivElement>(null)
-  const [left, setLeft] = useState<number | null>(null)
+  const [placement, setPlacement] = useState<{ left: number; bottom: number } | null>(null)
 
   useLayoutEffect(() => {
     const anchor = anchorRef.current
@@ -19,7 +19,11 @@ export function Popover({ anchorRef, onClose, children, width = 260 }: PopoverPr
     const panelWidth = panelRef.current?.offsetWidth ?? width
     const half = panelWidth / 2
     const center = rect.left + rect.width / 2
-    setLeft(Math.min(Math.max(center, half + 10), window.innerWidth - half - 10))
+    setPlacement({
+      left: Math.min(Math.max(center, half + 10), window.innerWidth - half - 10),
+      // 贴着锚点按钮上沿：窄屏工具栏换行后也不会盖住按钮
+      bottom: Math.max(8, window.innerHeight - rect.top + 8),
+    })
   }, [anchorRef, width])
 
   useEffect(() => {
@@ -47,7 +51,12 @@ export function Popover({ anchorRef, onClose, children, width = 260 }: PopoverPr
     <div
       ref={panelRef}
       className="tp-popover"
-      style={{ left: left ?? '50%', transform: 'translateX(-50%)', width }}
+      style={{
+        left: placement?.left ?? '50%',
+        bottom: placement?.bottom,
+        transform: 'translateX(-50%)',
+        width,
+      }}
       role="dialog"
     >
       {children}
