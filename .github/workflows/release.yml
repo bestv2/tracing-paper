@@ -1,0 +1,67 @@
+name: release
+
+# 打 v* tag 即自动构建三端安装包并挂到 GitHub Release；
+# 也可以手动触发（Actions → release → Run workflow）先出一份包给自己核对。
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+
+      # 版本号真源是 package.json，tag 与它不一致会导致商店后台拒收（不能退版本）
+      - name: 校验 tag 与 package.json 版本
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          TAG=${GITHUB_REF_NAME#v}
+          if [ "$VERSION" != "$TAG" ]; then
+            echo "✗ tag ${GITHUB_REF_NAME} 与 package.json ${VERSION} 不一致"
+            exit 1
+          fi
+          echo "✓ version ${VERSION}"
+
+      - run: npm run release
+
+      - name: 校验安装包完整性
+        run: |
+          for zip in release/*.zip; do
+            unzip -t "$zip" > /dev/null
+            echo "✓ $zip"
+          done
+          cat release/SHA256SUMS.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tracing-paper-${{ github.ref_name }}
+          path: |
+            release/*.zip
+            release/SHA256SUMS.txt
+          retention-days: 14
+
+      - uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            release/*.zip
+            release/SHA256SUMS.txt
+          generate_release_notes: true
+          fail_on_unmatched_files: true
