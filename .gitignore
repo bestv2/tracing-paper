@@ -2,11 +2,13 @@
 node_modules/
 
 # 构建产物
+# store/ 里只忽略脚本生成的二进制素材与中间产物，提交物料（listing / 隐私政策）需要纳入跟踪
 dist/
 dist-cli/
 dist-firefox/
 release/
-store/
+store/.build/
+store/assets/
 
 # 本地比对产物
 .tracing-report/

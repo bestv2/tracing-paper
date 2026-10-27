@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>描图纸 Tracing Paper · 隐私政策 / Privacy Policy</title>
+    <meta
+      name="description"
+      content="描图纸 Tracing Paper 隐私政策：不收集、不上传、不共享任何用户数据。Privacy policy for the Tracing Paper browser extension."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23211d17'/%3E%3Crect x='8' y='8' width='16' height='16' fill='none' stroke='%23ffb570' stroke-width='1.8'/%3E%3Cpath d='M16 5v22M5 16h22' stroke='%23ffb570' stroke-width='1.2' stroke-opacity='.55'/%3E%3C/svg%3E"
+    />
+    <style>
+      :root {
+        --paper: #f6f1e6;
+        --paper-raised: #fffdf7;
+        --ink: #211d17;
+        --ink-soft: #5b5347;
+        --ink-faint: #8a8072;
+        --line: #d9d0bd;
+        --accent: #bf3f27;
+        --serif: 'Songti SC', 'Noto Serif SC', Georgia, 'Times New Roman', serif;
+        --sans: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB',
+          'Microsoft YaHei', sans-serif;
+        --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--sans);
+        font-size: 16px;
+        line-height: 1.75;
+        background-image: radial-gradient(rgba(33, 29, 23, 0.035) 1px, transparent 1px);
+        background-size: 3px 3px;
+      }
+
+      .wrap {
+        max-width: 780px;
+        margin: 0 auto;
+        padding: 64px 24px 96px;
+      }
+
+      header.brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding-bottom: 22px;
+        border-bottom: 2px solid var(--ink);
+        margin-bottom: 34px;
+      }
+
+      .mark {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 44px;
+        border-radius: 10px;
+        background: var(--ink);
+        display: grid;
+        place-items: center;
+      }
+
+      .mark svg {
+        width: 26px;
+        height: 26px;
+      }
+
+      .brand h1 {
+        font-family: var(--serif);
+        font-size: 22px;
+        line-height: 1.3;
+        letter-spacing: 0.01em;
+        margin: 0;
+        font-weight: 600;
+      }
+
+      .brand p {
+        margin: 2px 0 0;
+        font-size: 13px;
+        color: var(--ink-faint);
+        font-family: var(--mono);
+        letter-spacing: 0.02em;
+      }
+
+      .lang {
+        display: flex;
+        gap: 6px;
+        margin-left: auto;
+      }
+
+      .lang a {
+        font-size: 12px;
+        font-family: var(--mono);
+        text-decoration: none;
+        color: var(--ink-soft);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 3px 11px;
+        background: var(--paper-raised);
+        transition: all 0.15s ease;
+      }
+
+      .lang a:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      .lang a.on {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: rgba(191, 63, 39, 0.07);
+      }
+
+      .meta {
+        font-size: 13px;
+        color: var(--ink-faint);
+        font-family: var(--mono);
+        margin: 0 0 26px;
+      }
+
+      .lead {
+        background: var(--paper-raised);
+        border: 1px solid var(--line);
+        border-left: 3px solid var(--accent);
+        border-radius: 4px;
+        padding: 18px 20px;
+        margin: 0 0 36px;
+        font-size: 15px;
+      }
+
+      .lead strong {
+        color: var(--accent);
+      }
+
+      h2 {
+        font-family: var(--serif);
+        font-size: 19px;
+        font-weight: 600;
+        margin: 42px 0 14px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--line);
+        letter-spacing: 0.01em;
+      }
+
+      h2 .num {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--accent);
+        margin-right: 10px;
+        letter-spacing: 0.08em;
+        vertical-align: 2px;
+      }
+
+      p {
+        margin: 0 0 14px;
+      }
+
+      ul {
+        margin: 0 0 16px;
+        padding-left: 20px;
+      }
+
+      li {
+        margin-bottom: 7px;
+      }
+
+      li::marker {
+        color: var(--accent);
+      }
+
+      code {
+        font-family: var(--mono);
+        font-size: 0.88em;
+        background: rgba(33, 29, 23, 0.06);
+        border-radius: 3px;
+        padding: 1px 5px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0 0 20px;
+        font-size: 14px;
+        background: var(--paper-raised);
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 9px 12px;
+        border: 1px solid var(--line);
+        vertical-align: top;
+      }
+
+      th {
+        background: rgba(33, 29, 23, 0.05);
+        font-weight: 600;
+        font-size: 12.5px;
+        letter-spacing: 0.04em;
+        color: var(--ink-soft);
+        white-space: nowrap;
+      }
+
+      tbody tr:hover {
+        background: rgba(191, 63, 39, 0.03);
+      }
+
+      .no {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      .contact {
+        background: var(--paper-raised);
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        padding: 16px 20px;
+        font-size: 15px;
+      }
+
+      .contact dl {
+        margin: 0;
+        display: grid;
+        grid-template-columns: 96px 1fr;
+        gap: 6px 12px;
+      }
+
+      .contact dt {
+        color: var(--ink-faint);
+        font-family: var(--mono);
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        padding-top: 3px;
+      }
+
+      .contact dd {
+        margin: 0;
+      }
+
+      .fill {
+        color: var(--ink);
+      }
+
+      .fill a {
+        color: var(--accent);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(191, 63, 39, 0.35);
+      }
+
+      .fill a:hover {
+        border-bottom-color: var(--accent);
+      }
+
+      /* 屏幕上只显示一种语言，分隔线只在打印双语的 PDF 时出现 */
+      hr.sep {
+        display: none;
+        border: 0;
+      }
+
+      footer {
+        margin-top: 56px;
+        padding-top: 20px;
+        border-top: 1px solid var(--line);
+        font-size: 12.5px;
+        color: var(--ink-faint);
+        font-family: var(--mono);
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      section[hidden] {
+        display: none;
+      }
+
+      @media (max-width: 620px) {
+        .wrap {
+          padding: 40px 18px 72px;
+        }
+        .brand {
+          flex-wrap: wrap;
+        }
+        .lang {
+          margin-left: 0;
+        }
+        table {
+          font-size: 13px;
+        }
+        th,
+        td {
+          padding: 8px 9px;
+        }
+        th {
+          white-space: normal;
+        }
+        .contact dl {
+          grid-template-columns: 1fr;
+          gap: 2px;
+        }
+        .contact dt {
+          padding-top: 8px;
+        }
+      }
+
+      @media print {
+        body {
+          background: #fff;
+          background-image: none;
+        }
+        .lang {
+          display: none;
+        }
+        section[hidden] {
+          display: block;
+        }
+        hr.sep {
+          display: block;
+          page-break-before: always;
+          margin: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="brand">
+        <div class="mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <g stroke="#ffb570">
+              <rect x="7.5" y="7.5" width="17" height="17" stroke-width="1.3" />
+              <path d="M16 4v24M4 16h24" stroke-width="1" stroke-opacity=".5" />
+            </g>
+            <g fill="#ffb570">
+              <rect x="5" y="5" width="4.6" height="4.6" />
+              <rect x="22.4" y="5" width="4.6" height="4.6" />
+              <rect x="5" y="22.4" width="4.6" height="4.6" />
+              <rect x="22.4" y="22.4" width="4.6" height="4.6" />
+            </g>
+          </svg>
+        </div>
+        <div>
+          <h1>描图纸 Tracing Paper</h1>
+          <p>隐私政策 / Privacy Policy</p>
+        </div>
+        <nav class="lang">
+          <a href="#zh" onclick="showLang('zh');return false">中文</a>
+          <a href="#en" onclick="showLang('en');return false">EN</a>
+        </nav>
+      </header>
+
+      <section id="zh" lang="zh-CN">
+        <p class="meta">最后更新：2026-10-26 · 适用版本 3.0.0 及以后</p>
+
+        <p class="lead">
+          描图纸 Tracing Paper（下称「本扩展」）是一个浏览器内的视觉走查工具：把设计稿叠加到网页上，
+          在本地做像素比对并生成差异报告。<strong>本扩展不收集、不上传、不共享任何用户数据。</strong>
+        </p>
+
+        <h2><span class="num">01</span>我们处理哪些数据</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>数据</th>
+              <th>存储位置</th>
+              <th>用途</th>
+              <th>是否离开设备</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>你插入的设计稿图片</td>
+              <td>浏览器本地存储（IndexedDB / <code>chrome.storage.local</code>）</td>
+              <td>叠加显示、像素比对、下次复用</td>
+              <td class="no">否</td>
+            </tr>
+            <tr>
+              <td>图层的坐标、尺寸、透明度、混合模式</td>
+              <td>同上，按页面 URL 归档</td>
+              <td>刷新页面后恢复走查现场</td>
+              <td class="no">否</td>
+            </tr>
+            <tr>
+              <td>比对产生的截图与报告（JSON / Markdown / SARIF / PNG）</td>
+              <td>内存 + 你主动导出到的本地文件</td>
+              <td>生成差异结论</td>
+              <td class="no">否</td>
+            </tr>
+            <tr>
+              <td>界面语言、主题偏好</td>
+              <td>同上</td>
+              <td>记住你的选择</td>
+              <td class="no">否</td>
+            </tr>
+            <tr>
+              <td>当前标签页的标题与 URL</td>
+              <td>不落盘（仅内存）</td>
+              <td>在弹窗中显示「本页走查状态」</td>
+              <td class="no">否</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          本扩展没有账号体系，不需要登录，也不读取你的浏览历史、书签、密码、Cookie 或表单内容。
+        </p>
+
+        <h2><span class="num">02</span>我们不做什么</h2>
+        <ul>
+          <li>不发起任何网络请求：没有埋点、没有统计 SDK、没有远程配置、没有第三方接口</li>
+          <li>不加载远程代码：所有脚本都打包在安装包内</li>
+          <li>不出售、不共享、不转让任何数据给第三方</li>
+          <li>不把数据用于广告、画像或信用评估</li>
+        </ul>
+
+        <h2><span class="num">03</span>权限与用途</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>权限</th>
+              <th>用途</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>storage</code> / <code>unlimitedStorage</code></td>
+              <td>在本地保存素材库与每页的走查状态</td>
+            </tr>
+            <tr>
+              <td><code>activeTab</code></td>
+              <td>你点击工具栏图标后，读取当前标签页标题与 URL</td>
+            </tr>
+            <tr>
+              <td><code>scripting</code></td>
+              <td>你开启工具时，按需把走查浮层注入当前页</td>
+            </tr>
+            <tr>
+              <td><code>host_permissions: &lt;all_urls&gt;</code></td>
+              <td>在任意站点叠加设计稿、截图比对、刷新后恢复浮层</td>
+            </tr>
+            <tr>
+              <td><code>commands</code>（Alt+Shift+V）</td>
+              <td>快捷键开关工具</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          Firefox 的 Manifest V3 将「访问网站」作为可选授权，你可以随时在浏览器扩展设置中撤销，
+          撤销后本扩展不会在任何页面注入脚本。
+        </p>
+
+        <h2><span class="num">04</span>数据保留与删除</h2>
+        <ul>
+          <li>所有数据都在你的浏览器配置目录内，卸载扩展或清除扩展数据即全部删除</li>
+          <li>弹窗中的「素材库 → 删除」可单独删除某张设计稿</li>
+          <li>页面内工具栏的「清空本页」可删除当前页的图层记录</li>
+        </ul>
+
+        <h2><span class="num">05</span>儿童隐私</h2>
+        <p>
+          本扩展面向开发者与设计师，不面向 13 岁以下儿童，也不会有意收集儿童数据（本扩展本身不收集任何数据）。
+        </p>
+
+        <h2><span class="num">06</span>政策变更</h2>
+        <p>
+          若未来功能变化导致数据处理方式改变，我们会在本页更新并修订「最后更新」日期；涉及新增数据收集时，
+          会在扩展更新说明中明确告知，并同步更新浏览器商店的数据使用声明。
+        </p>
+
+        <h2><span class="num">07</span>联系方式</h2>
+        <div class="contact">
+          <dl>
+            <dt>开发者</dt>
+            <dd class="fill">wind.wang</dd>
+            <dt>邮箱</dt>
+            <dd class="fill"><a href="mailto:bestv2@163.com">bestv2@163.com</a></dd>
+            <dt>主页</dt>
+            <dd class="fill">
+              <a href="https://github.com/bestv2/tracing-paper">github.com/bestv2/tracing-paper</a>
+            </dd>
+          </dl>
+        </div>
+      </section>
+
+      <hr class="sep" />
+
+      <section id="en" lang="en">
+        <p class="meta">Last updated: 2026-10-26 · Applies to version 3.0.0 and later</p>
+
+        <p class="lead">
+          Tracing Paper is an in-browser visual QA tool: it overlays a design mockup on a web page, runs a
+          pixel-level comparison locally and produces a diff report.
+          <strong>The extension does not collect, upload or share any user data.</strong>
+        </p>
+
+        <h2><span class="num">01</span>What is processed</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Where it lives</th>
+              <th>Why</th>
+              <th>Leaves your device</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Design images you insert</td>
+              <td>Local browser storage (IndexedDB / <code>chrome.storage.local</code>)</td>
+              <td>Overlay, comparison, reuse</td>
+              <td class="no">No</td>
+            </tr>
+            <tr>
+              <td>Layer geometry (position, size, opacity, blend mode)</td>
+              <td>Same, keyed by page URL</td>
+              <td>Restore the review session after reload</td>
+              <td class="no">No</td>
+            </tr>
+            <tr>
+              <td>Captures and reports (JSON / Markdown / SARIF / PNG)</td>
+              <td>Memory, plus files you explicitly export</td>
+              <td>Produce the diff result</td>
+              <td class="no">No</td>
+            </tr>
+            <tr>
+              <td>UI language and theme</td>
+              <td>Same local storage</td>
+              <td>Remember your choice</td>
+              <td class="no">No</td>
+            </tr>
+            <tr>
+              <td>Active tab title and URL</td>
+              <td>Memory only</td>
+              <td>Show the "current page" status in the popup</td>
+              <td class="no">No</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          There is no account system. The extension does not read your history, bookmarks, passwords,
+          cookies or form data.
+        </p>
+
+        <h2><span class="num">02</span>What we never do</h2>
+        <ul>
+          <li>No network requests: no analytics, no remote config, no third-party endpoints</li>
+          <li>No remote code: every script is bundled with the package</li>
+          <li>No selling, sharing or transferring data to third parties</li>
+          <li>No advertising, profiling or credit scoring</li>
+        </ul>
+
+        <h2><span class="num">03</span>Permissions</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Permission</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>storage</code> / <code>unlimitedStorage</code></td>
+              <td>Keep the local library and per-page review state</td>
+            </tr>
+            <tr>
+              <td><code>activeTab</code></td>
+              <td>Read the active tab title/URL after you click the toolbar icon</td>
+            </tr>
+            <tr>
+              <td><code>scripting</code></td>
+              <td>Inject the review overlay on demand when you enable the tool</td>
+            </tr>
+            <tr>
+              <td><code>host_permissions: &lt;all_urls&gt;</code></td>
+              <td>Overlay mockups and capture diffs on any site, restore the overlay after reload</td>
+            </tr>
+            <tr>
+              <td><code>commands</code> (Alt+Shift+V)</td>
+              <td>Keyboard shortcut to toggle the tool</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          Firefox's Manifest V3 treats site access as optional; you can revoke it at any time in the
+          browser's extension settings, after which no script is injected anywhere.
+        </p>
+
+        <h2><span class="num">04</span>Retention and deletion</h2>
+        <p>
+          All data lives inside your browser profile. Uninstalling the extension or clearing extension
+          data removes everything. The popup's library view lets you delete individual mockups, and the
+          in-page toolbar's "Clear page" removes the layers recorded for the current page.
+        </p>
+
+        <h2><span class="num">05</span>Children's privacy</h2>
+        <p>
+          The extension is built for developers and designers, is not directed to children under 13, and
+          never intentionally collects children's data (it collects no data at all).
+        </p>
+
+        <h2><span class="num">06</span>Changes</h2>
+        <p>
+          If a future feature changes how data is handled, this page will be updated (with a new
+          "last updated" date), and the change will be described in the extension release notes and the
+          store data-usage forms.
+        </p>
+
+        <h2><span class="num">07</span>Contact</h2>
+        <div class="contact">
+          <dl>
+            <dt>Developer</dt>
+            <dd class="fill">wind.wang</dd>
+            <dt>Email</dt>
+            <dd class="fill"><a href="mailto:bestv2@163.com">bestv2@163.com</a></dd>
+            <dt>Homepage</dt>
+            <dd class="fill">
+              <a href="https://github.com/bestv2/tracing-paper">github.com/bestv2/tracing-paper</a>
+            </dd>
+          </dl>
+        </div>
+      </section>
+
+      <footer>
+        <span>描图纸 Tracing Paper · v3.0.0</span>
+        <span>No data collection · 无数据收集</span>
+      </footer>
+    </div>
+
+    <script>
+      // 单页双语：默认跟随浏览器语言；点导航按钮可切换，链接可直接分享（#zh / #en）
+      function showLang(lang) {
+        const zh = document.getElementById('zh')
+        const en = document.getElementById('en')
+        const useEn = lang === 'en'
+        zh.hidden = useEn
+        en.hidden = !useEn
+        document.documentElement.lang = useEn ? 'en' : 'zh-CN'
+        document.title = useEn
+          ? 'Tracing Paper · Privacy Policy'
+          : '描图纸 Tracing Paper · 隐私政策'
+        document.querySelectorAll('.lang a').forEach((a) => {
+          a.classList.toggle('on', a.getAttribute('href') === '#' + lang)
+        })
+      }
+
+      // 打印时两段都保留（见 @media print），屏幕上只显示一段
+      function pickLang() {
+        const hash = location.hash.replace('#', '')
+        if (hash === 'zh' || hash === 'en') return hash
+        return /^zh/i.test(navigator.language || '') ? 'zh' : 'en'
+      }
+
+      if (!window.matchMedia('print').matches) {
+        showLang(pickLang())
+        // 首次带着 #zh / #en 打开时，浏览器会定位到段首，这里拉回顶部保留页头
+        requestAnimationFrame(() => window.scrollTo(0, 0))
+      }
+
+      // #zh / #en 同时是锚点，浏览器会跳到该段；这里把视口拉回顶部，避免页头被顶出屏幕
+      window.addEventListener('hashchange', () => {
+        showLang(pickLang())
+        window.scrollTo(0, 0)
+      })
+    </script>
+  </body>
+</html>

@@ -12,6 +12,7 @@
     "build:cli": "vite build --config vite.config.cli.ts",
     "release": "npm run build && node scripts/package.mjs",
     "store:assets": "node scripts/store-assets.mjs",
+    "store:docs": "node scripts/store-docs.mjs",
     "diff": "node dist-cli/tracing-diff.mjs",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist dist-firefox release"
